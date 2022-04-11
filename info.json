@@ -1,0 +1,9 @@
+{
+  "name": "MammothMK3",
+  "version": "1.0.0",
+  "title": "Mammoth MK3",
+  "author": "Sacredanarchy",
+  "factorio_version": "1.1",
+  "dependencies": ["base >= 1.1"],
+  "description": "A Mammoth Mk3 based on the c&c Tiberium Wars concept art"
+}
