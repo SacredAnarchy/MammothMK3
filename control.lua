@@ -5,19 +5,17 @@ local trigger_effects = {
 }
 
 local offsets = {
-  dual_cannon_right = require('prototypes/mammoth/right-barrel-offset')
+  dual_cannon_right = require('prototypes/mammoth/right-barrel-offsets')
 }
 
 -- If only there was a library mod that had all these functions :)
-
 local function add_positions(one, two)
   local x1, y1 = one.x or one[1], one.y or one[2]
   local x2, y2 = two.x or two[1], two.y or two[2]
   return {x = x1 + x2, y = y1 + y2}
 end
-
 local function offset64(orientation)
-  return math.modf((math.floor(orientation * 64) / 64) * 1000) / 1000
+  return math.floor(orientation * 64) / 64
 end
 local function orientation_between(pos1, pos2)
   return offset64((1 - (math.atan2(pos2.x - pos1.x, pos2.y - pos1.y) / math.pi)) / 2)
@@ -39,18 +37,13 @@ local actions = {
     local orientation_to_target = orientation_between(position, mammoth.target_position)
     local source_offset = offsets['dual_cannon_right'][orientation_to_target]
     local right_barrel_position = add_positions(position, source_offset)
-
-    local orientation_from_target = orientation_between(mammoth.target_position, position)
-    local target_offset = offsets['dual_cannon_right'][orientation_from_target]
-    local right_barrel_target = add_positions(mammoth.target_position, target_offset)
+    local right_barrel_target = mammoth.target_position
 
     --- @type LuaSurface.create_entity_param
     local projectile_params = {
       name = 'mammoth-shell-projectile',
       position = right_barrel_position,
       target = right_barrel_target,
-      -- position = mammoth.source_position,
-      -- target = mammoth.target_position,
       speed = 1,
       force = mammoth.entity.force
     }
@@ -59,8 +52,6 @@ local actions = {
       name = 'explosion-gunshot',
       position = right_barrel_position,
       target = right_barrel_target,
-      -- position = mammoth.source_position,
-      -- target = mammoth.target_position
     }
 
     mammoth.surface.play_sound { position = right_barrel_position, path = 'mammoth-gun-shot' }
