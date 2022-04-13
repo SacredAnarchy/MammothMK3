@@ -63,7 +63,7 @@ local mammoth_shell_item = {
         projectile = 'mammoth-shell-projectile',
         starting_speed = 1,
         -- direction_deviation = 0.1,
-        range_deviation = 0.1,
+        -- range_deviation = 0.1,
         max_range = 35,
         min_range = 0,
         target_effects = { { type = 'script', effect_id = 'fire-mammoth-dual-cannon' } }

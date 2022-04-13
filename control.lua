@@ -1,80 +1,126 @@
---[[
-local player = game.player
-local vehicle = player.vehicle
-local event = {}
-event.source_position = event.vehicle
---]] --
---- @param source MapPosition
---- @param target MapPosition
---- @return MapPosition
-local function get_offsets(source, target)
+--- Add new trigger effect names to this list!
+--- @type table<string, string>
+local trigger_effects = {
+  ['fire-mammoth-dual-cannon'] = 'fire-mammoth-dual-cannon'
+}
 
-  local angle = math.atan2((target.y - source.y), (target.x - source.x))
-  local r = 0.4 -- distance away to make projectiles
-  local u_rx = math.cos(angle)
-  local u_ry = math.sin(angle)
-  local r_along_vector = { x = r * u_rx, y = r * u_ry }
-  local barrel_separation_offset_x = 0.2 * (u_ry)
-  local barrel_separation_offset_y = 0.2 * (u_rx)
-  return {
-    { -- counter-clockwise = left-barrel
-      x = source.x + r_along_vector.x - barrel_separation_offset_x,
-      y = source.y + r_along_vector.y + barrel_separation_offset_y
-    }, { -- clockwise = right-barrel
-      x = source.x + r_along_vector.x + barrel_separation_offset_x,
-      y = source.y + r_along_vector.y - barrel_separation_offset_y
+local offsets = {
+  dual_cannon_right = require('prototypes/entity/mammoth/right-barrel-offset')
+}
+
+-- If only there was a library mod that had all these functions :)
+
+local function add_positions(one, two)
+  local x1, y1 = one.x or one[1], one.y or one[2]
+  local x2, y2 = two.x or two[1], two.y or two[2]
+  return {x = x1 + x2, y = y1 + y2}
+end
+local function opposite_orientation(o)
+  return (o + 0.5) % 1
+end
+local function offset64(orientation)
+  return math.floor((math.floor(orientation * 64)/64) /.001) * .001
+end
+local function orientation_between(pos1, pos2)
+  return offset64((1 - (math.atan2(pos2.x - pos1.x, pos2.y - pos1.y) / math.pi)) / 2)
+end
+
+--- @class Mammoth.actions
+--- @field action string
+--- @field next_tick uint
+--- @field entity LuaEntity
+--- @field ammo LuaItemStack
+
+--- Keep our handler clear and call our on_tick functions here
+local actions = {
+  --- @param mammoth Mammoth.dual_cannon
+  ['mammoth-shell-projectile'] = function(mammoth)
+    mammoth.ammo.drain_ammo(1)
+
+    local position = mammoth.entity.position
+    local orientation_to_target = orientation_between(position, mammoth.target_position)
+    local source_offset = offsets['dual_cannon_right'][orientation_to_target]
+    local right_barrel_position = add_positions(position, source_offset)
+
+    local orientation_from_target = orientation_between(mammoth.target_position, position)
+    __DebugAdapter.print(orientation_from_target)
+    log(orientation_from_target)
+    local target_offset = offsets['dual_cannon_right'][orientation_from_target]
+    local right_barrel_target = add_positions(mammoth.target_position, target_offset)
+
+    --- @type LuaSurface.create_entity_param
+    local projectile_params = {
+      name = 'mammoth-shell-projectile',
+      position = right_barrel_position,
+      target = right_barrel_target,
+      -- position = mammoth.source_position,
+      -- target = mammoth.target_position,
+      speed = 1,
+      force = mammoth.entity.force
     }
-  }
+
+    mammoth.surface.create_entity {
+      name = 'explosion-gunshot',
+      position = right_barrel_position,
+      target = right_barrel_target,
+      -- position = mammoth.source_position,
+      -- target = mammoth.target_position
+    }
+
+    mammoth.surface.play_sound { position = right_barrel_position, path = 'mammoth-gun-shot' }
+    mammoth.surface.create_entity(projectile_params)
+  end
+}
+
+local function add_to_tick(tick, mammoth)
+  mammoth.next_tick = tick
+  global.mammoths[tick] = global.mammoths[tick] or {}
+  global.mammoths[tick][#global.mammoths[tick] + 1] = mammoth
+  return mammoth
 end
 
 --- @param e on_script_trigger_effect
 local function OnDualmammothAttack(e)
-  -- TODO: Add actual firing sounds, adjust cooldown modifier to be longer
-  if e.effect_id == 'fire-mammoth-dual-cannon' then
-    local entity = e.source_entity
-    if not entity then
-      return
-    end
+  local effect_id = trigger_effects[e.effect_id]
+  if not effect_id then return end
 
-    local ammo = entity.get_inventory(defines.inventory.car_ammo)[entity.selected_gun_index] --- @type LuaItemStack
-    if not ammo.valid_for_read then
-      return
-    end
+  global.mammoths = global.mammoths or {} -- Todo move to init
+  local surface = game.get_surface(e.surface_index) --- @type LuaSurface
+  local target_position = e.target_position --- @type MapPosition
+  local source_position = e.source_position --- @type MapPosition
 
-    local next_shot = e.tick + 5
-    local target_position = e.target_position --- @type MapPosition
-    local source_position = e.source_position --- @type MapPosition
-    local surface = game.get_surface(e.surface_index) --- @type LuaSurface
-    local offsets = get_offsets(source_position, target_position)
+  local entity = e.source_entity
+  if not entity then return end
 
-    surface.create_entity {
-      name = 'explosion-gunshot',
-      position = source_position,
-      target = target_position
-    }
+  local ammo = entity.get_inventory(defines.inventory.car_ammo)[entity.selected_gun_index] --- @type LuaItemStack
+  if not ammo.valid_for_read then return end
+
+  -- TODO: adjust cooldown modifier to be longer
+  if effect_id == 'fire-mammoth-dual-cannon' then
+    -- !Factorio Bug with source_effects, create entity causes crash so... just do it here manually
+    surface.create_entity { name = 'explosion-gunshot', position = source_position, target = target_position }
     surface.play_sound { position = source_position, path = 'mammoth-gun-shot' }
 
-    global.mammoths = global.mammoths or {}
-    global.mammoths[next_shot] = global.mammoths[next_shot] or {}
-    local mammoths = global.mammoths[next_shot]
-
-    --- @class Mammoth.mammoth
+    --- This is the data we pass to the tick handler
+    --- @class Mammoth.dual_cannon: Mammoth.actions
     local mammoth = {
       entity = entity,
       target_position = target_position,
       source_position = source_position,
       ammo = ammo,
       tick = e.tick,
-      offsets = offsets,
       surface = surface,
-      actions = {}
+      action = 'mammoth-shell-projectile'
     }
-    mammoths[#mammoths + 1] = mammoth
+    add_to_tick(e.tick + 5, mammoth)
   end
+
+  -- if effect_id == 'my_effect_name' then
+  --  local mammoth = {} -- put mammoth data here
+  --  add_to_tick(ticks + ticks_from_now, mammoth)
+  -- end
 end
 script.on_event(defines.events.on_script_trigger_effect, OnDualmammothAttack)
-
-
 
 --- @param e on_tick
 local function go_pew_pew(e)
@@ -82,31 +128,13 @@ local function go_pew_pew(e)
     return
   end
 
-  --- @type Mammoth.mammoth
+  --- @type Mammoth.actions
   for _, mammoth in pairs(global.mammoths[e.tick]) do
     if mammoth.entity.valid and mammoth.ammo.valid_for_read then
-
-      --- @type LuaSurface.create_entity_param
-      local projectile_params = {
-        name = 'mammoth-shell-projectile',
-        position = mammoth.source_position,
-        target = mammoth.target_position,
-        speed = 1,
-        force = mammoth.entity.force
-
-      }
-
-      mammoth.surface.create_entity(projectile_params)
-
-      mammoth.surface.create_entity {
-        name = 'explosion-gunshot',
-        position = mammoth.source_position,
-        target = mammoth.target_position
-      }
-
-      mammoth.surface.play_sound { position = mammoth.source_position, path = 'mammoth-gun-shot' }
+      if mammoth.action and actions[mammoth.action] then
+        actions[mammoth.action](mammoth)
+      end
     end
-
   end
   global.mammoths[e.tick] = nil
 end
