@@ -60,13 +60,14 @@ local mammoth_shell_item = {
       type = 'direct',
       action_delivery = {
         type = 'projectile',
-        projectile = 'mammoth-shell-projectile',
+        projectile = 'mammoth-projectile',
         starting_speed = 1,
         -- direction_deviation = 0.1,
         -- range_deviation = 0.1,
         max_range = 35,
         min_range = 0,
-        target_effects = { { type = 'script', effect_id = 'fire-mammoth-dual-cannon' } }
+        -- target_effects = { { type = 'script', effect_id = 'fire-mammoth-dual-cannon' } }
+        target_effects = {--[[ Added in data-updates --]]}
       }
     }
   },
@@ -78,7 +79,7 @@ local mammoth_shell_item = {
 
 local mammoth_shell_projectile = {
   type = 'projectile',
-  name = 'mammoth-shell-projectile',
+  name = 'mammoth-projectile',
   flags = { 'not-on-map' },
   acceleration = 0.010,
   turn_speed = 0.009,
