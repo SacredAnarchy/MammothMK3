@@ -5,7 +5,7 @@ local trigger_effects = {
 }
 
 local offsets = {
-  dual_cannon_right = require('prototypes/entity/mammoth/right-barrel-offset')
+  dual_cannon_right = require('prototypes/mammoth/right-barrel-offset')
 }
 
 -- If only there was a library mod that had all these functions :)
@@ -15,11 +15,9 @@ local function add_positions(one, two)
   local x2, y2 = two.x or two[1], two.y or two[2]
   return {x = x1 + x2, y = y1 + y2}
 end
-local function opposite_orientation(o)
-  return (o + 0.5) % 1
-end
+
 local function offset64(orientation)
-  return math.floor((math.floor(orientation * 64)/64) /.001) * .001
+  return math.modf((math.floor(orientation * 64) / 64) * 1000) / 1000
 end
 local function orientation_between(pos1, pos2)
   return offset64((1 - (math.atan2(pos2.x - pos1.x, pos2.y - pos1.y) / math.pi)) / 2)
@@ -43,8 +41,6 @@ local actions = {
     local right_barrel_position = add_positions(position, source_offset)
 
     local orientation_from_target = orientation_between(mammoth.target_position, position)
-    __DebugAdapter.print(orientation_from_target)
-    log(orientation_from_target)
     local target_offset = offsets['dual_cannon_right'][orientation_from_target]
     local right_barrel_target = add_positions(mammoth.target_position, target_offset)
 

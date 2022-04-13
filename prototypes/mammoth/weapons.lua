@@ -21,7 +21,7 @@ local mammoth_tank_gun = {
     projectile_creation_distance = 0,
     projectile_orientation_offset = 0,
     projectile_center = { 0, 0 },
-    projectile_creation_parameters = require('prototypes/entity/mammoth/left-barrel-offsets'),
+    projectile_creation_parameters = require('prototypes/mammoth/left-barrel-offsets'),
     range = 35,
     sound = require('prototypes/sounds')
   },
@@ -87,7 +87,7 @@ local mammoth_shell_projectile = {
     type = 'direct',
     action_delivery = {
       type = 'instant',
-      target_effects = require('prototypes.entity.mammoth.projectile-target-effects')
+      target_effects = require('prototypes/mammoth/projectile-target-effects')
     }
   },
   animation = {

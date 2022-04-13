@@ -1,6 +1,6 @@
 local path = ('__MammothMK3__')
 
-require('prototypes/entity/mammoth/weapons')
+require('prototypes/mammoth/weapons')
 local mammoth_only = { 'mammothcannon' }
 local default_mammoth = { 'mammothcannon', 'tank-machine-gun', 'spidertron-rocket-launcher-1' }
 

@@ -1,7 +1,7 @@
 require("prototypes/items")
 require("prototypes/technology")
 
-require("prototypes/entity/mammoth/tank")
+require("prototypes/mammoth/tank")
 
 require("prototypes/entity/projectiles")
 require("prototypes/entity/smoke")

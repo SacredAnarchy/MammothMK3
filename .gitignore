@@ -1,5 +1,8 @@
 .vscode
 
+# temp files
+*.tmp.lua
+
 # Compiled Lua sources
 luac.out
 
