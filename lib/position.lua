@@ -32,4 +32,14 @@ function Position.offset_along_line(pos1, pos2, distance)
   return { x = x, y = y }
 end
 
+function Position.from_pixel(x, y)
+  return x / 32, y / 32
+end
+
+-- RealOrientation to Degrees
+-- print((ro % 1) * 360)
+
+-- Degrees to RealOrientation
+-- print((deg / 360) % 1)
+
 return Position

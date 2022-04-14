@@ -1,15 +1,16 @@
 --- !API request: entity.cooldown
-local Position = require('libs/position')
+---@diagnostic disable-next-line: different-requires
+local Position = require('lib/position')
 local offsets = require('prototypes/mammoth/right-barrel-offsets')
 local MAMMOTH_CANNON_RANGE = 35
 
---- @param mammoth Mammoth.dual_cannon
+--- @param mammoth Mammoth.data.dual_cannon
 return function(mammoth)
   mammoth.ammo.drain_ammo(1)
 
   local position = mammoth.entity.position
   local orientation_to_target = Position.orientation_between(position, mammoth.target_position)
-  local source_offset = offsets[orientation_to_target]
+  local source_offset = offsets[orientation_to_target][2]
   local right_barrel_position = Position.add_positions(position, source_offset)
   local right_barrel_target = mammoth.target_position
 

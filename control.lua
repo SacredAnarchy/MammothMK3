@@ -5,9 +5,7 @@ local trigger_effects = {
 }
 
 --- Keep our handler clear and call our on_tick functions here
-local actions = {
-  ['mammoth-cannon'] = require('actions/mammoth-cannon')
-}
+local actions = require('actions')
 
 local function add_to_tick(tick, mammoth)
   mammoth.next_tick = tick
@@ -38,7 +36,7 @@ local function OnDualmammothAttack(e)
     surface.play_sound { position = source_position, path = 'mammoth-gun-shot' }
 
     --- This is the data we pass to the tick handler
-    --- @class Mammoth.dual_cannon: Mammoth.actions
+    --- @class Mammoth.data.dual_cannon: Mammoth.data
     local mammoth = {
       entity = entity,
       target_position = target_position,
@@ -65,7 +63,7 @@ local function go_pew_pew(e)
     return
   end
 
-  --- @type Mammoth.actions
+  --- @type Mammoth.data
   for _, mammoth in pairs(global.mammoths[e.tick]) do
     if mammoth.entity.valid and mammoth.ammo.valid_for_read then
       if mammoth.action and actions[mammoth.action] then
