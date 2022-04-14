@@ -437,7 +437,7 @@ local tank = {
   turret_animation = {
     layers = {
       {
-        filename = path .. '/graphics/entity/mammothtank/lr-tank-turretb.png',
+        filename = path .. '/graphics/entity/mammothtank/lr-tank-turret.png',
         priority = 'low',
         render_layer = 'higher-object-above',
         line_length = 8,
@@ -448,7 +448,7 @@ local tank = {
         shift = util.by_pixel(0, 0),
         animation_speed = 8,
         hr_version = {
-          filename = path .. '/graphics/entity/mammothtank/hr-tank-turretb.png',
+          filename = path .. '/graphics/entity/mammothtank/hr-tank-turret.png',
           priority = 'low',
           render_layer = 'higher-object-above',
           line_length = 8,
