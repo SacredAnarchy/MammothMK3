@@ -81,8 +81,8 @@ local mammoth_shell_projectile = {
   action = {
     type = 'direct',
     action_delivery = {
-      type = 'instant',
-      target_effects = require('prototypes/mammoth/projectile-target-effects')
+    type = 'instant',
+    target_effects = require('prototypes/mammoth/projectile-target-effects')
     }
   },
   animation = {

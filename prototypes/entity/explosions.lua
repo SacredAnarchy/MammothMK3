@@ -113,5 +113,38 @@ data:extend{
       }
     }
   --]]
-  }
+  },
+
+  {
+    type = "explosion",
+    name = "railgun-beam",
+    flags = {"not-on-map"},
+    animation_speed = 3,
+    rotate = true,
+    beam = true,
+    animations =
+    {
+      layers = {
+        {
+          filename = "__MammothMK3__/graphics/entity/beam/beamsheet.png",
+          priority = "extra-high",
+          width = 192,
+          height = 1,
+          frame_count = 6,
+        },
+        {
+          filename = "__MammothMK3__/graphics/entity/beam/beammask.png",
+          priority = "extra-high",
+          width = 192,
+          height = 1,
+          apply_runtime_tint = true,
+          frame_count = 6,
+        }
+      }
+    },
+    light = {intensity = 1, size = 10},
+    smoke = "smoke-fast",
+    smoke_count = 2,
+    smoke_slow_down_factor = 1
+ }
 }
