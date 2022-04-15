@@ -13,12 +13,12 @@ data:extend{
       -- },
       { type = 'unlock-recipe', recipe = 'mammoth-shell' }
     },
-    prerequisites = { 'laser', 'tank', 'military-science-pack' },
+    prerequisites = { 'laser', 'tank'},
     unit = {
       count = 150,
       ingredients = {
-        { 'automation-science-pack', 1.5 }, { 'logistic-science-pack', 1 },
-        { 'military-science-pack', 1.5 }, { 'chemical-science-pack', 1 }
+        { 'automation-science-pack', 1 }, { 'logistic-science-pack', 1 },
+        { 'military-science-pack', 1 }, { 'chemical-science-pack', 1 }
       },
       time = 40
     },
@@ -150,7 +150,7 @@ data:extend{
     type = 'technology',
     name = 'mammoth-Shooting-Speed-1',
     icon_size = 64,
-    icon = path .. '/graphics/icons/soviet-teslas.png',
+    icon = path .. '/graphics/icons/mammothicon.png',
     effects = { { type = 'gun-speed', ammo_category = 'dual-shell', modifier = 0.2 } },
     prerequisites = { 'mammothtank' },
     unit = {
@@ -167,7 +167,7 @@ data:extend{
     type = 'technology',
     name = 'mammoth-Shooting-Speed-2',
     icon_size = 64,
-    icon = path .. '/graphics/icons/soviet-teslas.png',
+    icon = path .. '/graphics/icons/mammothicon.png',
     effects = { { type = 'gun-speed', ammo_category = 'dual-shell', modifier = 0.2 } },
     prerequisites = { 'mammoth-Shooting-Speed-1' },
     unit = {
@@ -184,7 +184,7 @@ data:extend{
     type = 'technology',
     name = 'mammoth-Shooting-Speed-3',
     icon_size = 64,
-    icon = path .. '/graphics/icons/soviet-teslas.png',
+    icon = path .. '/graphics/icons/mammothicon.png',
     effects = { { type = 'gun-speed', ammo_category = 'dual-shell', modifier = 0.3 } },
     prerequisites = { 'mammoth-Shooting-Speed-2' },
     unit = {
@@ -201,7 +201,7 @@ data:extend{
     type = 'technology',
     name = 'mammoth-Shooting-Speed-4',
     icon_size = 64,
-    icon = path .. '/graphics/icons/soviet-teslas.png',
+    icon = path .. '/graphics/icons/mammothicon.png',
     effects = { { type = 'gun-speed', ammo_category = 'dual-shell', modifier = 0.4 } },
     prerequisites = { 'mammoth-Shooting-Speed-3' },
     unit = {
@@ -218,7 +218,7 @@ data:extend{
     type = 'technology',
     name = 'mammoth-Shooting-Speed-5',
     icon_size = 64,
-    icon = path .. '/graphics/icons/soviet-teslas.png',
+    icon = path .. '/graphics/icons/mammothicon.png',
     effects = { { type = 'gun-speed', ammo_category = 'dual-shell', modifier = 0.4 } },
     prerequisites = { 'mammoth-Shooting-Speed-4' },
     unit = {
@@ -236,7 +236,7 @@ data:extend{
     type = 'technology',
     name = 'mammoth-Shooting-Speed-6',
     icon_size = 64,
-    icon = path .. '/graphics/icons/soviet-teslas.png',
+    icon = path .. '/graphics/icons/mammothicon.png',
     effects = {
       { type = 'ammo-damage', ammo_category = 'dual-shell', modifier = 0.7 },
       { type = 'ammo-damage', ammo_category = 'beam', modifier = 0.6 }
@@ -257,7 +257,7 @@ data:extend{
     type = 'technology',
     name = 'mammoth-Shooting-Speed-7',
     icon_size = 64,
-    icon = path .. '/graphics/icons/soviet-teslas.png',
+    icon = path .. '/graphics/icons/mammothicon.png',
     effects = {
       { type = 'ammo-damage', ammo_category = 'dual-shell', modifier = 0.10 },
       { type = 'ammo-damage', ammo_category = 'beam', modifier = 0.6 }
