@@ -1,3 +1,9 @@
+if not __DebugAdapter then
+    __DebugAdapter = {
+        print = function(...) end
+    }
+end
+
 require("prototypes/items")
 require("prototypes/technology")
 

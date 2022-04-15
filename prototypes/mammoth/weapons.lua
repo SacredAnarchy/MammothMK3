@@ -15,12 +15,9 @@ local mammoth_tank_gun = {
   order = 'z[tank]-a[cannon]',
   attack_parameters = {
     type = 'projectile',
-    ammo_categories = { 'cannon-shell' --[['dual-shell'--]] },
-    cooldown = 80 * 1,
+    ammo_categories = { 'cannon-shell', 'dual-shell' },
+    cooldown = 60 * 1.5,
     movement_slow_down_factor = 0,
-    projectile_creation_distance = 0,
-    projectile_orientation_offset = 0,
-    projectile_center = { 0, 0 },
     projectile_creation_parameters = require('prototypes/mammoth/left-barrel-offsets'),
     range = 35,
     sound = require('prototypes/sounds')
@@ -61,19 +58,16 @@ local mammoth_shell_item = {
       action_delivery = {
         type = 'projectile',
         projectile = 'mammoth-projectile',
-        starting_speed = 1,
-        -- direction_deviation = 0.1,
-        -- range_deviation = 0.1,
+        starting_speed = .75,
         max_range = 35,
         min_range = 0,
-        -- target_effects = { { type = 'script', effect_id = 'fire-mammoth-dual-cannon' } }
         target_effects = {--[[ Added in data-updates --]]}
       }
     }
   },
   subgroup = 'ammo',
   order = 'd[explosive-cannon-shell]-c[uranium]',
-  cooldown_modifier = 1,
+  cooldown_modifier = 0,
   stack_size = 80
 }
 
@@ -82,8 +76,8 @@ local mammoth_shell_projectile = {
   name = 'mammoth-projectile',
   flags = { 'not-on-map' },
   acceleration = 0.010,
-  turn_speed = 0.009,
-  turning_speed_increases_exponentially_with_projectile_speed = true,
+  turn_speed = 0.010,
+  turning_speed_increases_exponentially_with_projectile_speed = false,
   action = {
     type = 'direct',
     action_delivery = {
@@ -99,7 +93,6 @@ local mammoth_shell_projectile = {
     height = 50,
     priority = 'high'
   }
-  -- light = {intensity = 0.8, size = 15},
 }
 
 data:extend{ mammoth_tank_gun, mammoth_shell_recipe, mammoth_shell_item, mammoth_shell_projectile, dual_shell_ammo_category }

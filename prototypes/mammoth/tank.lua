@@ -56,7 +56,7 @@ local tank = {
     { type = 'electric', decrease = 30, percent = 50 },
     { type = 'laser', decrease = 30, percent = 50 }
   },
-  collision_box = { { -1.75, -1.75 }, { 1.75, 1.75 } },
+  collision_box = { { -1.6, -1.6 }, { 1.6, 1.6 } },
   selection_box = { { -2, -2 }, { 2, 2 } },
   damaged_trigger_effect = hit_effects.entity(),
   -- drawing_box = {{-2.1, -2.1}, {1.9, 1.9}},

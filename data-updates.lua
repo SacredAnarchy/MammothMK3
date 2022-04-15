@@ -12,7 +12,7 @@ for _, ammo in pairs(data.raw.ammo) do
     local payload = ammo.ammo_type.action and ammo.ammo_type.action.action_delivery
     if payload then
       if payload.projectile == ammo.name:gsub('%-shell$', '-projectile') then
-        log('Dual Cannon adding {ammo.name}')
+        __DebugAdapter.print('Dual Cannon adding {ammo.name}')
         if not payload.target_effects then
           payload.target_effects = { dual_cannon_script_effect }
         else
