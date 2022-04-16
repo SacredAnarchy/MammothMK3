@@ -34,6 +34,15 @@ local mammoth_shell_recipe = {
   result = 'mammoth-shell'
 }
 
+local mammoth_railround_recipe = {
+  type = 'recipe',
+  name = 'mammoth_railgun_round',
+  enabled = false,
+  energy_required = 5,
+  ingredients = { { 'explosive-cannon-shell', 1 }, { 'uranium-238', 1 } },
+  result = 'mammoth_railgun_round'
+}
+
 local mammoth_shell_item = {
   type = 'ammo',
   name = 'mammoth-shell',
@@ -95,4 +104,51 @@ local mammoth_shell_projectile = {
   }
 }
 
-data:extend{ mammoth_tank_gun, mammoth_shell_recipe, mammoth_shell_item, mammoth_shell_projectile, dual_shell_ammo_category }
+local mammoth_rail_round = {
+  type = "ammo",
+  name = "mammoth_railgun_round",
+  icon = "__base__/graphics/icons/explosive-cannon-shell.png",
+  icon_size = 64, icon_mipmaps = 4,
+  ammo_type =
+  {
+    category = "cannon-shell",
+    target_type = "direction",
+    clamp_position = true,
+    action =
+    {
+
+      type = "line",
+      range = 80,
+      width = 0.5,
+      range_effects =
+        {
+          type = "create-explosion",
+          entity_name = "railgun-beam"
+        },
+      action_delivery =
+      {
+        type = "instant",
+        target_effects =
+        {
+          {
+            type = "damage",
+            damage = {amount = 200 , type = "physical"}
+          },
+          {
+            type = "damage",
+            damage = {amount = 100 , type = "explosion"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "massive-explosion"
+          }
+        }
+      },
+    }
+  },
+  subgroup = "ammo",
+  order = "d[cannon-shell]-c[explosive]",
+  stack_size = 200
+}
+
+data:extend{ mammoth_tank_gun, mammoth_shell_recipe, mammoth_shell_item, mammoth_shell_projectile, dual_shell_ammo_category, mammoth_rail_round, mammoth_railround_recipe }

@@ -122,6 +122,21 @@ data:extend{
     animation_speed = 3,
     rotate = true,
     beam = true,
+    target_effects =
+      {
+        {
+          type = "damage",
+           damage = {amount = 500 , type = "physical"}
+        },
+        {
+           type = "damage",
+           damage = {amount = 500 , type = "explosion"}
+        },
+        {
+          type = "create-entity",
+          entity_name = "massive-explosion"
+        }
+      },
     animations =
     {
       layers = {
@@ -130,15 +145,17 @@ data:extend{
           priority = "extra-high",
           width = 192,
           height = 1,
-          frame_count = 6,
+          draw_as_glow = true,
+          frame_count = 24,
         },
         {
           filename = "__MammothMK3__/graphics/entity/beam/beammask.png",
           priority = "extra-high",
           width = 192,
           height = 1,
+          draw_as_glow = true,
           apply_runtime_tint = true,
-          frame_count = 6,
+          frame_count = 24,
         }
       }
     },
